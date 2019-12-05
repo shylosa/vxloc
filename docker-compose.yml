@@ -1,0 +1,64 @@
+version: '3.7'
+services:
+  vxloc_nginx:
+    build: ./docker/nginx
+    container_name: vxloc_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/conf:/etc/nginx/conf.d
+      - .:/var/www/html
+      - ./docker/nginx/log/:/var/log/nginx
+      - /tmp:/tmp
+    depends_on:
+      - vxloc_php
+    networks:
+      - vxloc-net
+
+  vxloc_php:
+    build: ./docker/php
+    container_name: vxloc_php
+    volumes:
+      - .:/var/www/html
+      - /tmp:/tmp
+      - ~/.composer:/var/www/.composer
+    environment:
+      - "DB_PORT=3306"
+      - "DB_HOST=vxloc_mysql"
+    depends_on:
+      - vxloc_mysql
+    networks:
+      - vxloc-net
+
+  vxloc_mysql:
+    image: mysql:5.7
+    container_name: vxloc_mysql
+    ports:
+      - "33071:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=vxloc
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+    volumes:
+      - vxloc_mysql_data:/var/lib/mysql
+    networks:
+      - vxloc-net
+
+  vxloc_pma:
+    image: phpmyadmin/phpmyadmin
+    container_name: vxloc_pma
+    environment:
+      - PMA_ARBITRARY=1
+    restart: always
+    ports:
+      - "8071:80"
+    volumes:
+      - /sessions
+    networks:
+      - vxloc-net
+
+networks:
+  vxloc-net:
+volumes:
+  vxloc_mysql_data:
