@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -16,7 +18,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'lastname',
+        'address',
+        'zipcode',
     ];
 
     /**
@@ -25,8 +30,39 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
+
+    /**
+     * User-country Database Dependencies
+     *
+     * @return BelongsTo
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    /**
+     * User-phones Database Dependencies
+     *
+     * @return hasMany
+     */
+    public function phones(): hasMany
+    {
+        return $this->hasMany(Phone::class);
+    }
+
+    /**
+     * User-phones Database Dependencies
+     *
+     * @return hasMany
+     */
+    public function emails(): hasMany
+    {
+        return $this->hasMany(Email::class);
+    }
 
     /**
      * The attributes that should be cast to native types.
@@ -36,4 +72,44 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Add user
+     *
+     * @param $fields
+     * @return static
+     */
+    public static function add($fields)
+    {
+        $user = new static;
+        $user->fill($fields);
+        $user->save();
+
+        return $user;
+    }
+
+    /**
+     * Edit existing user
+     *
+     * @param $fields
+     */
+    public function edit($fields): void
+    {
+        $this->fill($fields); //'name', 'lastname', 'address', 'zipcode', 'email'
+        $this->save();
+    }
+
+    /**
+     * Generate (encryption) user password
+     *
+     * @param string $password
+     */
+    public function generatePassword($password): void
+    {
+        if($password !== null)
+        {
+            $this->password = bcrypt($password);
+            $this->save();
+        }
+    }
 }
