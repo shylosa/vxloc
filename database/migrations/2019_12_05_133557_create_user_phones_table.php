@@ -17,6 +17,7 @@ class CreateUserPhonesTable extends Migration
             $table->bigIncrements('id');
             $table->string('phone');
             $table->string('user_id');
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }

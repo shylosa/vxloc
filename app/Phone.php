@@ -2,13 +2,10 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Phone extends Model
+class Phone extends AppModel
 {
-    public const IS_VISIBLE = 1;
-    public const IS_HIDE = 0;
 
     protected $fillable = ['phone'];
 

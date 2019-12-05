@@ -100,6 +100,17 @@ class User extends Authenticatable
     }
 
     /**
+     * Remove existing user
+     */
+    public function remove(): void
+    {
+        try {
+            $this->delete();
+        } catch (\Exception $e) {
+        }
+    }
+
+    /**
      * Generate (encryption) user password
      *
      * @param string $password
@@ -111,5 +122,29 @@ class User extends Authenticatable
             $this->password = bcrypt($password);
             $this->save();
         }
+    }
+
+    /**
+     * Set country for current user
+     *
+     * @param $id
+     */
+    public function setCountry($id): void
+    {
+        if($id === null) {return;}
+        $this->country_id = $id;
+        $this->save();
+    }
+
+    /**
+     * Set phones for current user
+     *
+     * @param $ids
+     */
+    public function setPhones($ids): void
+    {
+        if($ids === null){return;}
+
+        $this->phones()->sync($ids);
     }
 }

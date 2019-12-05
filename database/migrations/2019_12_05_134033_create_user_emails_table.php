@@ -17,6 +17,7 @@ class CreateUserEmailsTable extends Migration
             $table->bigIncrements('id');
             $table->string('email');
             $table->string('user_id');
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }
