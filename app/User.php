@@ -39,7 +39,7 @@ class User extends Authenticatable
      *
      * @return BelongsTo
      */
-    public function category(): BelongsTo
+    public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
     }
@@ -55,7 +55,7 @@ class User extends Authenticatable
     }
 
     /**
-     * User-phones Database Dependencies
+     * User-emails Database Dependencies
      *
      * @return hasMany
      */
@@ -146,5 +146,41 @@ class User extends Authenticatable
         if($ids === null){return;}
 
         $this->phones()->sync($ids);
+    }
+
+    /**
+     * Get name for country
+     *
+     * @return string
+     */
+    public function getCountryName()
+    {
+        return ($this->country !== null)
+            ?   $this->country->name
+            :   'Нет страны';
+    }
+
+    /**
+     * Get phone numbers
+     *
+     * @return string
+     */
+    public function getPhones()
+    {
+        return (!$this->phones->isEmpty())
+            ?   implode(', ', $this->phones->pluck('phone')->all())
+            : 'Нет номеров';
+    }
+
+    /**
+     * Get emails
+     *
+     * @return string
+     */
+    public function getEmails()
+    {
+        return (!$this->phones->isEmpty())
+            ?   implode(', ', $this->emails->pluck('email')->all())
+            : 'Нет адресов';
     }
 }

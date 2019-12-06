@@ -15,12 +15,14 @@
     return view('welcome');
 });*/
 
-Auth::routes();
-
 //Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/', 'MainController@index');
+Route::get('/login', 'AuthController@loginForm')->name('login');
+Route::get('/phonebook', 'PhonebookController@index')->name('phonebook');
 
-Auth::routes();
+Route::get('/phonebook/{id}', 'PhonebookController@show')->name('phonebook.show');
+
+//Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

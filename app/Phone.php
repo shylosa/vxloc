@@ -14,7 +14,7 @@ class Phone extends AppModel
      *
      * @return BelongsTo
      */
-    public function phones(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserPhonesTable extends Migration
+class CreatePhonesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateUserPhonesTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_phones', function (Blueprint $table) {
+        Schema::create('phones', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('phone');
             $table->string('user_id');
@@ -29,6 +29,6 @@ class CreateUserPhonesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_phones');
+        Schema::dropIfExists('phones');
     }
 }

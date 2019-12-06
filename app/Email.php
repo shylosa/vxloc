@@ -13,7 +13,7 @@ class Email extends AppModel
      *
      * @return BelongsTo
      */
-    public function emails(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

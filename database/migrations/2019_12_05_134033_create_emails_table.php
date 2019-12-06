@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserEmailsTable extends Migration
+class CreateEmailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateUserEmailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_emails', function (Blueprint $table) {
+        Schema::create('emails', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('email');
             $table->string('user_id');
@@ -29,6 +29,6 @@ class CreateUserEmailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_emails');
+        Schema::dropIfExists('emails');
     }
 }
