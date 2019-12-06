@@ -19,9 +19,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'firstname',
         'lastname',
         'address',
         'zipcode',
+        'country_id',
     ];
 
     /**
@@ -95,7 +97,7 @@ class User extends Authenticatable
      */
     public function edit($fields): void
     {
-        $this->fill($fields); //'name', 'lastname', 'address', 'zipcode', 'email'
+        $this->fill($fields); //'name', 'firstname', 'lastname', 'address', 'zipcode', 'country_id'
         $this->save();
     }
 

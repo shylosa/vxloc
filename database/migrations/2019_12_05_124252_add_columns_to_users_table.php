@@ -14,15 +14,17 @@ class AddColumnsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['email', 'email_verified_at']);
+            $table->dropColumn(['name', 'password', 'email', 'email_verified_at']);
         });
 
         Schema::table('users', function (Blueprint $table) {
-            $table->string('lastname')->after('name');
-            $table->string('address')->after('lastname');
-            $table->string('zipcode')->after('address');
-            $table->string('country_id')->after('zipcode');
-
+            $table->string('name')->after('id')->unique();
+            $table->string('firstname')->nullable()->after('name');
+            $table->string('lastname')->nullable()->after('firstname');
+            $table->string('address')->nullable()->after('lastname');
+            $table->string('zipcode')->nullable()->after('address');
+            $table->integer('country_id')->nullable()->after('zipcode');
+            $table->string('password')->nullable()->after('country_id');
         });
     }
 
@@ -34,6 +36,7 @@ class AddColumnsToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('firstname');
             $table->dropColumn('lastname');
             $table->dropColumn('address');
             $table->dropColumn('zipcode');

@@ -6,6 +6,7 @@ use App\User;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\Console\Input\Input;
 
 class AuthController extends Controller
 {
@@ -16,14 +17,6 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        try {
-            $this->validate($request, [
-                'name' => 'required',
-                'password' => 'required'
-            ]);
-        } catch (ValidationException $e) {
-        }
-
         $user = User::add($request->all());
         $user->generatePassword($request->get('password'));
 
@@ -38,6 +31,11 @@ class AuthController extends Controller
                 'password' => 'required'
             ]);
         } catch (ValidationException $e) {
+        }
+
+        $user = User::where('name', $request->input('name'))->first();
+        if ($user === null) {
+            $this->register($request);
         }
 
         if(Auth::attempt([

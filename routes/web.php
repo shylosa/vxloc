@@ -19,10 +19,11 @@
 
 Route::get('/', 'MainController@index');
 Route::get('/login', 'AuthController@loginForm')->name('login');
-Route::get('/phonebook', 'PhonebookController@index')->name('phonebook');
+Route::post('/login', 'AuthController@login');
 
+Route::get('/phonebook', 'PhonebookController@index')->name('phonebook');
 Route::get('/phonebook/{id}', 'PhonebookController@show')->name('phonebook.show');
 
-//Auth::routes();
+Route::get('/logout', 'AuthController@logout');
 
 Route::get('/home', 'HomeController@index')->name('home');
