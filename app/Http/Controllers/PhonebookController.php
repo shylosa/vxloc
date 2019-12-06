@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Email;
+use App\Phone;
 use App\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
@@ -21,8 +23,16 @@ class PhonebookController extends Controller
         return view('phonebook.index', ['users' => $users]);
     }
 
-    public function show()
+    public function show($id)
     {
-        return view('phonebook.show');
+        $user = User::find($id);
+        $phones = $user->phones;
+        $emails = $user->emails;
+
+        return view('phonebook.show', [
+            'user' => $user,
+            'phones' => $phones,
+            'emails' => $emails
+        ]);
     }
 }

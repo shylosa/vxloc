@@ -51,7 +51,7 @@ class User extends Authenticatable
      *
      * @return hasMany
      */
-    public function phones(): hasMany
+    public function phones(): HasMany
     {
         return $this->hasMany(Phone::class);
     }
