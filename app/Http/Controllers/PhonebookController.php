@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Email;
 use App\Phone;
 use App\User;
+use Auth;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -34,5 +35,12 @@ class PhonebookController extends Controller
             'phones' => $phones,
             'emails' => $emails
         ]);
+    }
+
+    public function mycontact()
+    {
+        $user = Auth::user()->id;
+
+        return view('phonebook.mycontact', ['user' => $user]);
     }
 }

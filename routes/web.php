@@ -23,6 +23,7 @@ Route::post('/login', 'AuthController@login');
 
 Route::get('/phonebook', 'PhonebookController@index')->name('phonebook');
 Route::get('/phonebook/{id}', 'PhonebookController@show')->name('phonebook.show');
+Route::get('/mycontact', 'PhonebookController@mycontact')->name('phonebook.mycontact');
 
 Route::get('/logout', 'AuthController@logout');
 
