@@ -25,6 +25,7 @@ class AddColumnsToUsersTable extends Migration
             $table->string('zipcode')->nullable()->after('address');
             $table->integer('country_id')->nullable()->after('zipcode');
             $table->string('password')->nullable()->after('country_id');
+            $table->integer('status')->default(0)->after('password');
         });
     }
 

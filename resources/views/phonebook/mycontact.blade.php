@@ -13,11 +13,18 @@
               </div>
             @endif
 
-            <form method="POST" action="{{ route('phonebook.mycontact') }}">
+            <form method="POST" action="{{route('phonebook.store')}}">
               @csrf
 
-              <div class="row">
+              <div class="form-inline justify-content-end">
+                <div class="form-check">
+                  <label class="form-check-label" for="status">Publish my contact</label>
+                  <input class="form-check-input ml-2" type="checkbox"
+                         id="status" name="status" {{ $user->getStatus() }} value="1">
+                </div>
+              </div>
 
+              <div class="row">
                 <div id="contact" class="col-sm text-md-center">
                   <label for="contact" class="col-form-label"><u>{{ __('Contact') }}</u></label>
                   <div class="form-group row">
@@ -71,12 +78,21 @@
                   <div class="form-group row">
                     <label for="country" class="col-md-4 col-form-label text-md-right">{{ __('Country') }}</label>
                     <div class="col-md">
-                      <input id="country" type="text"
-                             class="form-control @error('country') is-invalid @enderror" name="country"
-                             value="{{ old('zipcode') }}" required autocomplete="zipcode">
-                      @error('country')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                      @enderror
+                      <select id="country" class="form-control @error('country') is-invalid @enderror"
+                              name="country" required>
+                        @foreach($countries as $country)
+                              <?php xdebug_break(); ?>
+
+                          <option value="{{ $country }}"
+                                  @if($user->country()->pluck('name')->first() === $country)
+                                    selected="selected"
+                                  @endif>{{ $country }}</option>
+                        @endforeach
+
+                        @error('country')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
+                      </select>
                     </div>
                   </div>
                 </div>

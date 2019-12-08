@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Country;
 use App\Email;
 use App\Phone;
 use App\User;
@@ -19,7 +20,7 @@ class PhonebookController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::whereNotNull('firstname')->whereNotNull('lastname')->get();
 
         return view('phonebook.index', ['users' => $users]);
     }
@@ -39,8 +40,18 @@ class PhonebookController extends Controller
 
     public function mycontact()
     {
-        $user = Auth::user()->id;
+        $currentUser = Auth::user()->id;
+        $user = User::find($currentUser);
+        $countries = Country::all()->pluck('name');
 
-        return view('phonebook.mycontact', ['user' => $user]);
+        return view('phonebook.mycontact', ['user' => $user, 'countries' => $countries]);
+    }
+
+    public function store(Request $request)
+    {
+        if (!$request->exists('status')) {
+            $request;
+        }
+        return $request;
     }
 }

@@ -28,3 +28,4 @@ Route::get('/mycontact', 'PhonebookController@mycontact')->name('phonebook.mycon
 Route::get('/logout', 'AuthController@logout');
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::post('/', 'PhonebookController@store')->name('phonebook.store');

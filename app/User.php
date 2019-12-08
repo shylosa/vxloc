@@ -24,6 +24,7 @@ class User extends Authenticatable
         'address',
         'zipcode',
         'country_id',
+        'status'
     ];
 
     /**
@@ -97,7 +98,8 @@ class User extends Authenticatable
      */
     public function edit($fields): void
     {
-        $this->fill($fields); //'name', 'firstname', 'lastname', 'address', 'zipcode', 'country_id'
+        //'name', 'firstname', 'lastname', 'address', 'zipcode', 'country_id', 'status'
+        $this->fill($fields);
         $this->save();
     }
 
@@ -184,5 +186,10 @@ class User extends Authenticatable
         return (!$this->phones->isEmpty())
             ?   implode(', ', $this->emails->pluck('email')->all())
             : 'Нет адресов';
+    }
+
+    public function getStatus()
+    {
+        return ($this->status == 1) ? 'checked': '';
     }
 }
