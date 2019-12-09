@@ -11,7 +11,9 @@
               <div class="alert alert-danger">
                 {{session('status')}}
               </div>
-            @endif
+          @endif
+
+          <!-- Form -->
 
             <form method="POST" action="{{route('phonebook.store')}}">
               @csrf
@@ -20,7 +22,7 @@
                 <div class="form-check">
                   <label class="form-check-label" for="status">Publish my contact</label>
                   <input class="form-check-input ml-2" type="checkbox"
-                         id="status" name="status" {{ App\AppModel::isChecked($contact_status) }} value="1">
+                         id="status" name="status" {{ App\AppModel::isChecked($contact['status']) }} value="1">
                 </div>
               </div>
 
@@ -32,7 +34,7 @@
                     <div class="col-md">
                       <input id="firstname" type="text"
                              class="form-control @error('firstname') is-invalid @enderror" name="firstname"
-                             value="{{ old('firstname', $firstname) }}" required autocomplete="firstname" autofocus>
+                             value="{{ old('firstname', $contact['firstname']) }}" required autocomplete="firstname" autofocus>
                       @error('firstname')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
@@ -44,7 +46,7 @@
                     <div class="col-md">
                       <input id="lastname" type="text"
                              class="form-control @error('lastname') is-invalid @enderror" name="lastname"
-                             value="{{ old('lastname', $lastname) }}" required autocomplete="lastname">
+                             value="{{ old('lastname', $contact['lastname']) }}" required autocomplete="lastname">
                       @error('lastname')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
@@ -56,7 +58,7 @@
                     <div class="col-md">
                       <input id="address" type="text"
                              class="form-control @error('address') is-invalid @enderror" name="address"
-                             value="{{ old('address', $address) }}" required autocomplete="address">
+                             value="{{ old('address', $contact['address']) }}" required autocomplete="address">
                       @error('address')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
@@ -68,7 +70,7 @@
                     <div class="col-md">
                       <input id="zipcode" type="text"
                              class="form-control @error('zipcode') is-invalid @enderror" name="zipcode"
-                             value="{{ old('zipcode', $zipcode) }}" required autocomplete="zipcode">
+                             value="{{ old('zipcode', $contact['zipcode']) }}" required autocomplete="zipcode">
                       @error('zipcode')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
@@ -96,46 +98,45 @@
                   <label for="phones" class="col-form-label"><u>{{ __('Phones') }}</u></label>
                   @foreach($phones as $phone)
                     <div class="form-group row">
-                        <div class="col-md">
-                          <input type="text"
-                                 class="form-control @error('phone') is-invalid @enderror" name="phone[]"
-                                 value="{{ old('phone', $phone['phone']) }}" required autocomplete="phone">
-                          @error('phone')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                          @enderror
-                        </div>
-                        <div class="col-md-1">
-                          <input class="form-check-input" type="checkbox" {{ App\AppModel::isChecked($phone['phone_status']) }}
-                                 id="phone_status" name="phone_status[]" value="1">
-                        </div>
+                      <div class="col-md">
+                        <input type="text"
+                               class="form-control @error('phone') is-invalid @enderror" name="phone[]"
+                               value="{{ old('phone', $phone['phone']) }}" required autocomplete="phone">
+                        @error('phone')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
+                      </div>
+                      <div class="col-md-1">
+                        <input class="form-check-input" type="checkbox"
+                               {{ App\AppModel::isChecked($phone['phone_status']) }}
+                               id="phone_status" name="phone_status[]" value="1">
+                      </div>
                     </div>
                   @endforeach
                   <a href="/" class="col-md-4 float-right">Add</a>
                 </div>
-
 
                 <div id="emails" class="col-sm text-md-center">
                   <label for="emails" class="col-form-label"><u>{{ __('Emails') }}</u></label>
                   @foreach($emails as $email)
                     <div class="form-group row">
-                        <div class="col-md">
-                          <input type="text"
-                                 class="form-control @error('phone') is-invalid @enderror" name="email[]"
-                                 value="{{ old('email', $email['email']) }}" required autocomplete="email">
-                          @error('email')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                          @enderror
-                        </div>
-                        <div class="col-md-1">
-                          <input class="form-check-input" type="checkbox"
-                                 {{ App\AppModel::isChecked($email['email_status']) }}
-                                 id="email_status" name="email_status[]" value="1">
-                        </div>
+                      <div class="col-md">
+                        <input type="text"
+                               class="form-control @error('phone') is-invalid @enderror" name="email[]"
+                               value="{{ old('email', $email['email']) }}" required autocomplete="email">
+                        @error('email')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
+                      </div>
+                      <div class="col-md-1">
+                        <input class="form-check-input" type="checkbox"
+                               {{ App\AppModel::isChecked($email['email_status']) }}
+                               id="email_status" name="email_status[]" value="1">
+                      </div>
                     </div>
                   @endforeach
                   <a href="/" class="col-md-4 float-right">Add</a>
                 </div>
-
               </div>
 
               <div class="form-group row mb-0 justify-content-end">
@@ -145,8 +146,10 @@
                   </button>
                 </div>
               </div>
-
             </form>
+
+            <!-- EndFrom -->
+
           </div>
         </div>
       </div>

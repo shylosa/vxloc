@@ -27,39 +27,34 @@ class PhonebookController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        $contact = $user->contact;
+        $contact = $user->contact->toArray();
 
         return view('phonebook.show', [
-            'user'        => $user,
-            'phones'      => $contact->phones,
-            'emails'      => $contact->emails,
-            'address'     => $contact->address,
-            'zipcode'     => $contact->zipcode,
-            'userCountry' => $contact->country->country_name
+            'contact'     => $contact,
+            'phones'      => $user->contact->phones,
+            'emails'      => $user->contact->emails,
+            'userCountry' => $user->contact->country->country_name
         ]);
     }
 
     public function mycontact()
     {
         $user = Auth::user();
-        $contact = $user->contact;
+        $contact = $user->contact->toArray();
 
         return view('phonebook.mycontact', [
-            'contact_status' => $contact->status,
-            'firstname'   => $contact->firstname,
-            'lastname'    => $contact->lastname,
-            'address'     => $contact->address,
-            'zipcode'     => $contact->zipcode,
-            'userCountry' => $contact->country->country_name,
-            'countries'   => Country::all()->pluck('country_name', 'id'),
-            'phones'      => $contact->phones->all(),
-            'emails'      => $contact->emails->all()
+            'contact'     => $contact,
+            'phones'      => $user->contact->phones,
+            'emails'      => $user->contact->emails,
+            'userCountry' => $user->contact->country->country_name,
+            'countries'   => Country::all()->pluck('country_name', 'id')
         ]);
     }
 
     public function store(Request $request)
     {
         $user = Auth::user();
+
         $user->edit($request->all());
 
         return redirect()->back()->with('status', 'Contact updated!');

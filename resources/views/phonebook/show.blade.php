@@ -5,8 +5,8 @@
         <div class="row">
             <div class="col-sm">
                 <span><u>Address</u></span>
-                <div>{{ $address }}</div>
-                <div>{{ $zipcode }}</div>
+                <div>{{ $contact['address'] }}</div>
+                <div>{{ $contact['zipcode'] }}</div>
                 <div>{{ $userCountry }}</div>
             </div>
             <div class="col-sm">
