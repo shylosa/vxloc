@@ -21,7 +21,7 @@ class CreateContactsTable extends Migration
             $table->string('address');
             $table->string('zipcode');
             $table->integer('country_id')->default(1);
-            $table->boolean('status')->default(0);
+            $table->boolean('contact_status')->default(0);
             $table->timestamps();
         });
     }

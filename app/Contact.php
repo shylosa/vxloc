@@ -21,7 +21,7 @@ class Contact extends AppModel
         'address',
         'zipcode',
         'country_id',
-        'status'
+        'contact_status'
     ];
 
     /**
@@ -63,6 +63,18 @@ class Contact extends AppModel
     {
         return $this->hasMany(Email::class);
     }
+
+    /**
+     * Edit existing contact
+     *
+     * @param $fields
+     */
+    public function editContact($fields): void
+    {
+        $this->fill($fields);
+        $this->save();
+    }
+
 
     /**
      * Set country for current contact

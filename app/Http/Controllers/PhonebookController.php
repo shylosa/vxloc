@@ -9,6 +9,7 @@ use Auth;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Validation\ValidationException;
 
 class PhonebookController extends Controller
 {
@@ -53,9 +54,20 @@ class PhonebookController extends Controller
 
     public function store(Request $request)
     {
-        $user = Auth::user();
+        $this->validate($request, [
+            'firstname' =>'required',
+            'lastname' =>'required',
+            'address' =>'required',
+            'zipcode' =>'required',
+            'email.*' => 'email'
+        ]);
 
+        $user = Auth::user();
         $user->edit($request->all());
+        $user->contact->editContact($request->all());
+
+        $user->contact->phones->setPhones($request->input('phone'));
+
 
         return redirect()->back()->with('status', 'Contact updated!');
     }

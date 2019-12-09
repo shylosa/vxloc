@@ -11,7 +11,7 @@
               <div class="alert alert-danger">
                 {{session('status')}}
               </div>
-          @endif
+            @endif
 
           <!-- Form -->
 
@@ -21,8 +21,9 @@
               <div class="form-inline justify-content-end">
                 <div class="form-check">
                   <label class="form-check-label" for="status">Publish my contact</label>
-                  <input class="form-check-input ml-2" type="checkbox"
-                         id="status" name="status" {{ App\AppModel::isChecked($contact['status']) }} value="1">
+                  <input type="hidden" name="contact_status" value="0">
+                  <input class="form-check-input ml-2" type="checkbox" id="contact_status"
+                         name="contact_status" {{ App\AppModel::isChecked($contact['contact_status']) }} value="1">
                 </div>
               </div>
 
@@ -100,16 +101,17 @@
                     <div class="form-group row">
                       <div class="col-md">
                         <input type="text"
-                               class="form-control @error('phone') is-invalid @enderror" name="phone[]"
-                               value="{{ old('phone', $phone['phone']) }}" required autocomplete="phone">
+                               class="form-control @error('phone') is-invalid @enderror" name="phone[{{ $phone->id }}]"
+                               value="{{ old('phone', $phone['phone']) }}" required>
                         @error('phone')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                         @enderror
                       </div>
                       <div class="col-md-1">
+                        <input type="hidden" name="phone_status[{{ $phone->id }}]" value="0">
                         <input class="form-check-input" type="checkbox"
                                {{ App\AppModel::isChecked($phone['phone_status']) }}
-                               id="phone_status" name="phone_status[]" value="1">
+                               name="phone_status[{{ $phone->id }}]" value="1">
                       </div>
                     </div>
                   @endforeach
@@ -122,16 +124,17 @@
                     <div class="form-group row">
                       <div class="col-md">
                         <input type="text"
-                               class="form-control @error('phone') is-invalid @enderror" name="email[]"
-                               value="{{ old('email', $email['email']) }}" required autocomplete="email">
+                               class="form-control @error('phone') is-invalid @enderror" name="email[{{ $email->id }}]"
+                               value="{{ old('email', $email['email']) }}" required>
                         @error('email')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                         @enderror
                       </div>
                       <div class="col-md-1">
+                        <input type="hidden" name="email_status[{{ $email->id }}]" value="0">
                         <input class="form-check-input" type="checkbox"
                                {{ App\AppModel::isChecked($email['email_status']) }}
-                               id="email_status" name="email_status[]" value="1">
+                               id="email_status" name="email_status[{{ $email->id }}]" value="1">
                       </div>
                     </div>
                   @endforeach

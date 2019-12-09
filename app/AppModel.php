@@ -8,6 +8,7 @@ class AppModel extends Model
 {
     public const IS_PUBLIC = 1;
     public const IS_PRIVATE = 0;
+    public const IS_CHECKED = 'checked';
 
     /**
      * Set private status the property
@@ -43,7 +44,6 @@ class AppModel extends Model
         $this->setPublic();
     }
 
-
     /**
      * Set checkboxe status
      *
@@ -52,6 +52,6 @@ class AppModel extends Model
      */
     public static function isChecked($state)
     {
-        return $state ? 'checked': '';
+        return $state ? self::IS_CHECKED : '';
     }
 }
