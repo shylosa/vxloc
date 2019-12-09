@@ -7,7 +7,7 @@
                 <span><u>Address</u></span>
                 <div>{{ $address }}</div>
                 <div>{{ $zipcode }}</div>
-                <div>{{ $country }}</div>
+                <div>{{ $userCountry }}</div>
             </div>
             <div class="col-sm">
                 <span><u>Phones</u></span>

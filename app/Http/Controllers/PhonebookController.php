@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Contact;
 use App\Country;
-use App\Email;
-use App\Phone;
 use App\User;
 use Auth;
 use Illuminate\Contracts\View\Factory;
@@ -29,31 +27,34 @@ class PhonebookController extends Controller
     public function show($id)
     {
         $user = User::find($id);
+        $contact = $user->contact;
 
         return view('phonebook.show', [
-            'user' => $user,
-            'phones' => $user->contact->phones,
-            'emails' => $user->contact->emails,
-            'address' => $user->contact->address,
-            'zipcode' => $user->contact->zipcode,
-            'country' => $user->contact->country->country_name
+            'user'        => $user,
+            'phones'      => $contact->phones,
+            'emails'      => $contact->emails,
+            'address'     => $contact->address,
+            'zipcode'     => $contact->zipcode,
+            'userCountry' => $contact->country->country_name
         ]);
     }
 
     public function mycontact()
     {
         $user = Auth::user();
-        ($user->country) ? $userCountry =  $user->country->name : $userCountry = null;
+        $contact = $user->contact;
 
-        $countries = Country::all()->pluck('name', 'id');
-        $phones = $user->phones->pluck('phone', 'id')->all();
-        $phoneStatuses = $user->phones->pluck('phone_status', 'id')->all();
-        $emails = $user->emails->pluck('email', 'id')->all();
-        $emailStatuses = $user->emails->pluck('email_status', 'id')->all();
-
-        return view('phonebook.mycontact',
-            compact('user','userCountry', 'countries', 'phones', 'emails', 'phoneStatuses', 'emailStatuses')
-        );
+        return view('phonebook.mycontact', [
+            'contact_status' => $contact->status,
+            'firstname'   => $contact->firstname,
+            'lastname'    => $contact->lastname,
+            'address'     => $contact->address,
+            'zipcode'     => $contact->zipcode,
+            'userCountry' => $contact->country->country_name,
+            'countries'   => Country::all()->pluck('country_name', 'id'),
+            'phones'      => $contact->phones->all(),
+            'emails'      => $contact->emails->all()
+        ]);
     }
 
     public function store(Request $request)
