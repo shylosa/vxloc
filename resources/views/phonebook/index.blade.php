@@ -3,9 +3,9 @@
 @section('content')
   <div>
     <ol>
-      @foreach($users as $user)
-        <li>{{ $user->firstname }} {{ $user->lastname }}
-          <a href="{{ route('phonebook.show', $user->id) }}">view details</a></li>
+      @foreach($contacts as $contact)
+        <li>{{ $contact->firstname }} {{ $contact->lastname }}
+          <a href="{{ route('phonebook.show', $contact->id) }}">view details</a></li>
       @endforeach
     </ol>
   </div>

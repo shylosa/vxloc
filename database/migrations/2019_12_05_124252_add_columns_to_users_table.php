@@ -19,13 +19,7 @@ class AddColumnsToUsersTable extends Migration
 
         Schema::table('users', function (Blueprint $table) {
             $table->string('name')->after('id')->unique();
-            $table->string('firstname')->nullable()->after('name');
-            $table->string('lastname')->nullable()->after('firstname');
-            $table->string('address')->nullable()->after('lastname');
-            $table->string('zipcode')->nullable()->after('address');
-            $table->integer('country_id')->nullable()->after('zipcode');
-            $table->string('password')->nullable()->after('country_id');
-            $table->integer('status')->default(0)->after('password');
+            $table->string('password')->nullable()->after('name');
         });
     }
 
@@ -37,11 +31,8 @@ class AddColumnsToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('firstname');
-            $table->dropColumn('lastname');
-            $table->dropColumn('address');
-            $table->dropColumn('zipcode');
-            $table->dropColumn('country_id');
+            $table->dropColumn('name');
+            $table->dropColumn('password');
         });
 
 

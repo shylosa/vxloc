@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -18,13 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
-        'firstname',
-        'lastname',
-        'address',
-        'zipcode',
-        'country_id',
-        'status'
+        'name'
     ];
 
     /**
@@ -34,37 +29,17 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        'remember_token'
     ];
 
     /**
-     * User-country Database Dependencies
+     * User-contact Database Dependencies
      *
-     * @return BelongsTo
+     * @return hasOne
      */
-    public function country(): BelongsTo
+    public function contact(): hasOne
     {
-        return $this->belongsTo(Country::class);
-    }
-
-    /**
-     * User-phones Database Dependencies
-     *
-     * @return hasMany
-     */
-    public function phones(): HasMany
-    {
-        return $this->hasMany(Phone::class);
-    }
-
-    /**
-     * User-emails Database Dependencies
-     *
-     * @return hasMany
-     */
-    public function emails(): hasMany
-    {
-        return $this->hasMany(Email::class);
+        return $this->hasOne(Contact::class);
     }
 
     /**
@@ -98,7 +73,7 @@ class User extends Authenticatable
      */
     public function edit($fields): void
     {
-        //'name', 'firstname', 'lastname', 'address', 'zipcode', 'country_id', 'status'
+        //'name'
         $this->fill($fields);
         $this->save();
     }
@@ -128,68 +103,5 @@ class User extends Authenticatable
         }
     }
 
-    /**
-     * Set country for current user
-     *
-     * @param $id
-     */
-    public function setCountry($id): void
-    {
-        if($id === null) {return;}
-        $this->country_id = $id;
-        $this->save();
-    }
 
-    /**
-     * Set phones for current user
-     *
-     * @param $ids
-     */
-    public function setPhones($ids): void
-    {
-        if($ids === null){return;}
-
-        $this->phones()->sync($ids);
-    }
-
-    /**
-     * Get name for country
-     *
-     * @return string
-     */
-    public function getCountryName()
-    {
-        return ($this->country !== null)
-            ?   $this->country->name
-            :   'Нет страны';
-    }
-
-    /**
-     * Get phone numbers
-     *
-     * @return string
-     */
-    public function getPhones()
-    {
-        return (!$this->phones->isEmpty())
-            ?   implode(', ', $this->phones->pluck('phone')->all())
-            : 'Нет номеров';
-    }
-
-    /**
-     * Get emails
-     *
-     * @return string
-     */
-    public function getEmails()
-    {
-        return (!$this->phones->isEmpty())
-            ?   implode(', ', $this->emails->pluck('email')->all())
-            : 'Нет адресов';
-    }
-
-    public function getStatus()
-    {
-        return ($this->status == 1) ? 'checked': '';
-    }
 }

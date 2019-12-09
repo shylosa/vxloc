@@ -4,17 +4,19 @@
     <div class="container">
         <div class="row">
             <div class="col-sm">
-                <span>Address</span>
-                <div>{{ $user->address }}</div>
+                <span><u>Address</u></span>
+                <div>{{ $address }}</div>
+                <div>{{ $zipcode }}</div>
+                <div>{{ $country }}</div>
             </div>
             <div class="col-sm">
-                <span>Phones</span>
+                <span><u>Phones</u></span>
                 @foreach($phones as $phone)
                     <div>{{ $phone->phone }}</div>
                 @endforeach
             </div>
             <div class="col-sm">
-                <span>E-mails</span>
+                <span><u>Emails</u></span>
                 @foreach($emails as $email)
                     <div>{{ $email->email }}</div>
                 @endforeach

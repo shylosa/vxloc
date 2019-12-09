@@ -9,12 +9,12 @@ class Email extends AppModel
     protected $fillable = ['email'];
 
     /**
-     * User-emails Database Dependencies
+     * Contact-emails Database Dependencies
      *
      * @return BelongsTo
      */
-    public function user(): BelongsTo
+    public function contact(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Contact::class);
     }
 }

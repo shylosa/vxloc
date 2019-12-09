@@ -42,4 +42,16 @@ class AppModel extends Model
 
         $this->setPublic();
     }
+
+
+    /**
+     * Set checkboxe status
+     *
+     * @param $state
+     * @return string
+     */
+    public static function isChecked($state)
+    {
+        return $state ? 'checked': '';
+    }
 }

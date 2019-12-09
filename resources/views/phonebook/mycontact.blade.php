@@ -20,7 +20,7 @@
                 <div class="form-check">
                   <label class="form-check-label" for="status">Publish my contact</label>
                   <input class="form-check-input ml-2" type="checkbox"
-                         id="status" name="status" {{ $user->getStatus() }} value="1">
+                         id="status" name="status" {{ $user->getStatus($user->status) }} value="1">
                 </div>
               </div>
 
@@ -32,7 +32,7 @@
                     <div class="col-md">
                       <input id="firstname" type="text"
                              class="form-control @error('firstname') is-invalid @enderror" name="firstname"
-                             value="{{ old('firstname') }}" required autocomplete="firstname" autofocus>
+                             value="{{ old('firstname', $user->firstname) }}" required autocomplete="firstname" autofocus>
                       @error('firstname')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
@@ -44,7 +44,7 @@
                     <div class="col-md">
                       <input id="lastname" type="text"
                              class="form-control @error('lastname') is-invalid @enderror" name="lastname"
-                             value="{{ old('lastname') }}" required autocomplete="lastname">
+                             value="{{ old('lastname', $user->lastname) }}" required autocomplete="lastname">
                       @error('lastname')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
@@ -56,7 +56,7 @@
                     <div class="col-md">
                       <input id="address" type="text"
                              class="form-control @error('address') is-invalid @enderror" name="address"
-                             value="{{ old('address') }}" required autocomplete="address">
+                             value="{{ old('address', $user->address) }}" required autocomplete="address">
                       @error('address')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
@@ -68,7 +68,7 @@
                     <div class="col-md">
                       <input id="zipcode" type="text"
                              class="form-control @error('zipcode') is-invalid @enderror" name="zipcode"
-                             value="{{ old('zipcode') }}" required autocomplete="zipcode">
+                             value="{{ old('zipcode', $user->zipcode) }}" required autocomplete="zipcode">
                       @error('zipcode')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
@@ -78,20 +78,15 @@
                   <div class="form-group row">
                     <label for="country" class="col-md-4 col-form-label text-md-right">{{ __('Country') }}</label>
                     <div class="col-md">
-                      <select id="country" class="form-control @error('country') is-invalid @enderror"
-                              name="country" required>
-                        @foreach($countries as $country)
-                              <?php xdebug_break(); ?>
-
-                          <option value="{{ $country }}"
-                                  @if($user->country()->pluck('name')->first() === $country)
+                      <select id="country_id" class="form-control" name="country_id">
+                        @foreach($countries as $id => $country)
+                          <option value="{{ $id }}"
+                                  @if($userCountry === $country)
                                     selected="selected"
-                                  @endif>{{ $country }}</option>
+                                  @endif>
+                            {{ $country }}
+                          </option>
                         @endforeach
-
-                        @error('country')
-                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
                       </select>
                     </div>
                   </div>
@@ -100,17 +95,20 @@
                 <div id="phones" class="col-sm text-md-center">
                   <label for="phones" class="col-form-label"><u>{{ __('Phones') }}</u></label>
                   <div class="form-group row">
-                    <div class="col-md">
-                      <input type="text"
-                             class="form-control @error('phone') is-invalid @enderror" name="phone"
-                             value="{{ old('phone') }}" required autocomplete="phone">
-                      @error('phone')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                      @enderror
-                    </div>
-                    <div class="col-md-1">
-                      <input class="form-check-input" type="checkbox">
-                    </div>
+                    @foreach($phones as $id => $phone)
+                      <div class="col-md">
+                        <input type="text"
+                               class="form-control @error('phone') is-invalid @enderror" name="phone[]"
+                               value="{{ old('phone') }}" required autocomplete="phone">
+                        @error('phone')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
+                      </div>
+                      <div class="col-md-1">
+                        <input class="form-check-input" type="checkbox" {{ App\User::getStatus(phoneStatuses) }}
+                               id="phone_status" name="phone_status[]" value="">
+                      </div>
+                    @endforeach
                   </div>
 
                     <a href="/" class="col-md-4 float-right">Add</a>
@@ -123,14 +121,14 @@
                   <div class="form-group row">
                     <div class="col-md">
                       <input type="text"
-                             class="form-control @error('phone') is-invalid @enderror" name="email"
+                             class="form-control @error('phone') is-invalid @enderror" name="email[]"
                              value="{{ old('email') }}" required autocomplete="email">
                       @error('email')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
                     </div>
                     <div class="col-md-1">
-                      <input class="form-check-input" type="checkbox">
+                      <input class="form-check-input" type="checkbox" id="email_status" name="email_status[]" value="0">
                     </div>
                   </div>
                   <a href="/" class="col-md-4 float-right">Add</a>

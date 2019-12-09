@@ -10,13 +10,13 @@ class Phone extends AppModel
     protected $fillable = ['phone'];
 
     /**
-     * User-phones Database Dependencies
+     * Contact-phones Database Dependencies
      *
      * @return BelongsTo
      */
-    public function user(): BelongsTo
+    public function contact(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Contact::class);
 
     }
 }
