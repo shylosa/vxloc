@@ -16,6 +16,7 @@ class Contact extends AppModel
      * @var array
      */
     protected $fillable = [
+        'user_id',
         'firstname',
         'lastname',
         'address',
@@ -65,6 +66,18 @@ class Contact extends AppModel
     }
 
     /**
+     * Add contact
+     *
+     * @param $fields
+     */
+    public function addContact($fields): void
+    {
+        $contact = new static();
+        $contact->fill($fields);
+        $contact->save();
+
+    }
+    /**
      * Edit existing contact
      *
      * @param $fields
@@ -99,7 +112,7 @@ class Contact extends AppModel
     {
         if($phones === null || $states === null) { return; }
         foreach ($phones as $key => $phone) {
-            if (!$phone === null) {
+            if ($phone) {
                 Phone::updateOrCreate(
                     ['id' => $key],
                     ['phone' => $phone, 'phone_status' => $states[$key], 'contact_id' => $contactId]);
@@ -118,9 +131,8 @@ class Contact extends AppModel
     public function setEmails(array $emails, array $states, int $contactId): void
     {
         if($emails === null || $states === null) { return; }
-
         foreach ($emails as $key => $email) {
-            if (!$email === null) {
+            if ($email) {
                 Email::updateOrCreate(
                     ['id' => $key],
                     ['email' => $email, 'email_status' => $states[$key], 'contact_id' => $contactId]);

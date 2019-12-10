@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Contact;
 use App\Country;
+use App\Email;
+use App\Phone;
 use App\User;
 use Auth;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Validator;
 
 class PhonebookController extends Controller
@@ -22,27 +23,35 @@ class PhonebookController extends Controller
     public function index()
     {
         $contacts = Contact::whereNotNull('firstname')->whereNotNull('lastname')->get();
+        //$contacts = Contact::;
 
         return view('phonebook.index', ['contacts' => $contacts]);
     }
 
     public function show($id)
     {
-        $user = User::find($id);
-        $contact = $user->contact->toArray();
+        $contact = Contact::find($id);
 
         return view('phonebook.show', [
             'contact'     => $contact,
-            'phones'      => $user->contact->phones,
-            'emails'      => $user->contact->emails,
-            'userCountry' => $user->contact->country->country_name
+            'phones'      => $contact->phones,
+            'emails'      => $contact->emails,
+            'userCountry' => $contact->country->country_name
         ]);
+
     }
 
     public function mycontact()
     {
         $user = Auth::user();
+        if ($user) {
+            //Initialize record in table for new model
+            Phone::firstOrCreate(['contact_id' => $user->contact->id]);
+            Email::firstOrCreate(['contact_id' => $user->contact->id]);
+        }
         $contact = $user->contact->toArray();
+
+        //@TODO Make correct preservation of old field values in case of validation errors
 
         return view('phonebook.mycontact', [
             'contact'     => $contact,
@@ -51,6 +60,7 @@ class PhonebookController extends Controller
             'userCountry' => $user->contact->country->country_name,
             'countries'   => Country::all()->pluck('country_name', 'id')
         ]);
+
     }
 
     public function store(Request $request)
@@ -69,16 +79,17 @@ class PhonebookController extends Controller
         ]);
 
         if (!$validator->fails()) {
+
             $user = Auth::user();
-            $user->edit($request->all());
+            $contactId = $user->contact->id;
             $user->contact->editContact($request->all());
-            $user->contact->setPhones($request->input('phone'), $request->input('phone_status'), $user->id);
-            $user->contact->setEmails($request->input('email'), $request->input('email_status'), $user->id);
+            $user->contact->setPhones($request->input('phone'), $request->input('phone_status'), $contactId);
+            $user->contact->setEmails($request->input('email'), $request->input('email_status'), $contactId);
 
             return redirect()->back()->with('status', 'Contact updated!');
         }
 
-        return redirect('mycontact')->withErrors($validator);
+        return redirect()->back()->withErrors($validator);
         //return redirect()->back()->with('status', 'Some fields contain errors!')->withErrors($validator);
     }
 }

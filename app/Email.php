@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Email extends AppModel
 {
-    protected $fillable = ['email', 'email_status', 'user_id'];
+    protected $fillable = ['contact_id', 'email', 'email_status'];
 
     /**
      * Contact-emails Database Dependencies

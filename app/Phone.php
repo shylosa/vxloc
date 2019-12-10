@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Phone extends AppModel
 {
 
-    protected $fillable = ['phone', 'phone_status', 'user_id'];
+    protected $fillable = ['contact_id', 'phone', 'phone_status'];
 
     /**
      * Contact-phones Database Dependencies
