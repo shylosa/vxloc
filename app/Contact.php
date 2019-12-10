@@ -91,13 +91,42 @@ class Contact extends AppModel
     /**
      * Set phones for current contact
      *
-     * @param $ids
+     * @param array $phones
+     * @param array $states
+     * @param int $contactId
      */
-    public function setPhones($ids): void
+    public function setPhones(array $phones, array $states, int $contactId): void
     {
-        if($ids === null){return;}
+        if($phones === null || $states === null) { return; }
+        foreach ($phones as $key => $phone) {
+            if (!$phone === null) {
+                Phone::updateOrCreate(
+                    ['id' => $key],
+                    ['phone' => $phone, 'phone_status' => $states[$key], 'contact_id' => $contactId]);
+            }
 
-        $this->phones()->sync($ids);
+        }
+    }
+
+    /**
+     * Set emails for current contact
+     *
+     * @param array $emails
+     * @param array $states
+     * @param int $contactId
+     */
+    public function setEmails(array $emails, array $states, int $contactId): void
+    {
+        if($emails === null || $states === null) { return; }
+
+        foreach ($emails as $key => $email) {
+            if (!$email === null) {
+                Email::updateOrCreate(
+                    ['id' => $key],
+                    ['email' => $email, 'email_status' => $states[$key], 'contact_id' => $contactId]);
+            }
+        }
+
     }
 
     /**

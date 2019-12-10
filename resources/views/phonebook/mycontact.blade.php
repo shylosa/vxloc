@@ -59,7 +59,7 @@
                     <div class="col-md">
                       <input id="address" type="text"
                              class="form-control @error('address') is-invalid @enderror" name="address"
-                             value="{{ old('address', $contact['address']) }}" required autocomplete="address">
+                             value="{{ old('address', $contact['address']) }}" autocomplete="address">
                       @error('address')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
@@ -102,7 +102,7 @@
                       <div class="col-md">
                         <input type="text"
                                class="form-control @error('phone') is-invalid @enderror" name="phone[{{ $phone->id }}]"
-                               value="{{ old('phone', $phone['phone']) }}" required>
+                               value="{{ old('phone', $phone['phone']) }}">
                         @error('phone')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                         @enderror
@@ -125,7 +125,7 @@
                       <div class="col-md">
                         <input type="text"
                                class="form-control @error('phone') is-invalid @enderror" name="email[{{ $email->id }}]"
-                               value="{{ old('email', $email['email']) }}" required>
+                               value="{{ old('email', $email['email']) }}">
                         @error('email')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                         @enderror

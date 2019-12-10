@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
 
 class PhonebookController extends Controller
 {
@@ -54,21 +55,29 @@ class PhonebookController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'firstname' =>'required',
-            'lastname' =>'required',
-            'address' =>'required',
-            'zipcode' =>'required',
-            'email.*' => 'email'
+        $validator = Validator::make($request->all(), [
+            'firstname' => 'required',
+            'lastname'  => 'required',
+            'address'   => 'required',
+            'zipcode'   => 'required',
+            'phone'     => 'required|array|min:1',
+            'phone.*'   => 'required|string|distinct|min:10',
+            'phone_status' => 'required|array|min:1',
+            'email'        => 'required|array|min:1',
+            'email.*'      => 'required|email',
+            'email_status' => 'required|array|min:1'
         ]);
 
-        $user = Auth::user();
-        $user->edit($request->all());
-        $user->contact->editContact($request->all());
+        if (!$validator->fails()) {
+            $user = Auth::user();
+            $user->edit($request->all());
+            $user->contact->editContact($request->all());
+            $user->contact->setPhones($request->input('phone'), $request->input('phone_status'), $user->id);
+            $user->contact->setEmails($request->input('email'), $request->input('email_status'), $user->id);
 
-        $user->contact->phones->setPhones($request->input('phone'));
+            return redirect()->back()->with('status', 'Contact updated!');
+        }
 
-
-        return redirect()->back()->with('status', 'Contact updated!');
+        return redirect()->back()->with('status', 'Some fields contain errors!');
     }
 }
