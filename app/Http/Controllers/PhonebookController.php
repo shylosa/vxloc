@@ -78,6 +78,7 @@ class PhonebookController extends Controller
             return redirect()->back()->with('status', 'Contact updated!');
         }
 
-        return redirect()->back()->with('status', 'Some fields contain errors!');
+        return redirect('mycontact')->withErrors($validator);
+        //return redirect()->back()->with('status', 'Some fields contain errors!')->withErrors($validator);
     }
 }

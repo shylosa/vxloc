@@ -9,13 +9,13 @@
           <div class="card-body">
             @if(session('status'))
               <div class="alert alert-danger">
-                {{session('status')}}
+                {{ session('status') }}
               </div>
             @endif
 
           <!-- Form -->
 
-            <form method="POST" action="{{route('phonebook.store')}}">
+            <form method="POST" action="{{ route('phonebook.store') }}">
               @csrf
 
               <div class="form-inline justify-content-end">
@@ -35,9 +35,11 @@
                     <div class="col-md">
                       <input id="firstname" type="text"
                              class="form-control @error('firstname') is-invalid @enderror" name="firstname"
-                             value="{{ old('firstname', $contact['firstname']) }}" required autocomplete="firstname" autofocus>
+                             value="{{ old('firstname', $contact['firstname']) }}" autocomplete="firstname" autofocus>
                       @error('firstname')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                        </span>
                       @enderror
                     </div>
                   </div>
@@ -47,9 +49,11 @@
                     <div class="col-md">
                       <input id="lastname" type="text"
                              class="form-control @error('lastname') is-invalid @enderror" name="lastname"
-                             value="{{ old('lastname', $contact['lastname']) }}" required autocomplete="lastname">
+                             value="{{ old('lastname', $contact['lastname']) }}" autocomplete="lastname">
                       @error('lastname')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                        </span>
                       @enderror
                     </div>
                   </div>
@@ -61,7 +65,9 @@
                              class="form-control @error('address') is-invalid @enderror" name="address"
                              value="{{ old('address', $contact['address']) }}" autocomplete="address">
                       @error('address')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                        </span>
                       @enderror
                     </div>
                   </div>
@@ -71,9 +77,11 @@
                     <div class="col-md">
                       <input id="zipcode" type="text"
                              class="form-control @error('zipcode') is-invalid @enderror" name="zipcode"
-                             value="{{ old('zipcode', $contact['zipcode']) }}" required autocomplete="zipcode">
+                             value="{{ old('zipcode', $contact['zipcode']) }}" autocomplete="zipcode">
                       @error('zipcode')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                        </span>
                       @enderror
                     </div>
                   </div>
@@ -83,12 +91,8 @@
                     <div class="col-md">
                       <select id="country_id" class="form-control" name="country_id">
                         @foreach($countries as $id => $country)
-                          <option value="{{ $id }}"
-                                  @if($userCountry === $country)
-                                  selected="selected"
-                              @endif>
-                            {{ $country }}
-                          </option>
+                          <option value="{{ $id }}" @if($userCountry === $country) selected="selected" @endif>
+                            {{ $country }}</option>
                         @endforeach
                       </select>
                     </div>
@@ -100,12 +104,10 @@
                   @foreach($phones as $phone)
                     <div class="form-group row">
                       <div class="col-md">
-                        <input type="text"
-                               class="form-control @error('phone') is-invalid @enderror" name="phone[{{ $phone->id }}]"
-                               value="{{ old('phone', $phone['phone']) }}">
-                        @error('phone')
-                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+
+                        <input type="text" class="form-control"
+                               name="phone[{{ $phone->id }}]" value="{{ old('phone', $phone['phone']) }}">
+                        {!! $errors->first('phone.'.$phone->id, '<span class="form-text text-danger">:message</span>') !!}
                       </div>
                       <div class="col-md-1">
                         <input type="hidden" name="phone_status[{{ $phone->id }}]" value="0">
@@ -124,11 +126,9 @@
                     <div class="form-group row">
                       <div class="col-md">
                         <input type="text"
-                               class="form-control @error('phone') is-invalid @enderror" name="email[{{ $email->id }}]"
+                               class="form-control" name="email[{{ $email->id }}]"
                                value="{{ old('email', $email['email']) }}">
-                        @error('email')
-                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                        {!! $errors->first('email.'.$email->id, '<span class="form-text text-danger">:message</span>') !!}
                       </div>
                       <div class="col-md-1">
                         <input type="hidden" name="email_status[{{ $email->id }}]" value="0">
@@ -144,9 +144,7 @@
 
               <div class="form-group row mb-0 justify-content-end">
                 <div class="col-md-2">
-                  <button type="submit" class="btn btn-primary col-md">
-                    {{ __('Save') }}
-                  </button>
+                  <button type="submit" class="btn btn-primary col-md">{{ __('Save') }}</button>
                 </div>
               </div>
             </form>
