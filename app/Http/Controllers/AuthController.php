@@ -12,11 +12,9 @@ class AuthController extends Controller
 {
     public function loginForm(Request $request)
     {
-        if($request->ajax()) {
-            return view('partials.login-form');
-        }
-
-        return view('pages.login');
+        return ($request->ajax()) ?
+            view('partials.login-form') :
+            view('auth.login');
     }
 
     public function register(Request $request)

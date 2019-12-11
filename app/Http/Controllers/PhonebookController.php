@@ -18,27 +18,36 @@ class PhonebookController extends Controller
     /**
      * Display a listing of the phonebook
      *
+     * @param Request $request
      * @return Factory|View
      */
-    public function index()
+    public function index(Request $request)
     {
         $contacts = Contact::whereNotNull('firstname')->whereNotNull('lastname')->get();
-        //$contacts = Contact::;
+        $fields = ['contacts' => $contacts];
 
-        return view('phonebook.index', ['contacts' => $contacts]);
+        return ($request->ajax()) ?
+            view('partials.common-phonebook', $fields) :
+            view('phonebook.index', $fields);
     }
 
-    public function show($id)
+    public function show($id, Request $request)
     {
         $contact = Contact::find($id);
-
-        return view('phonebook.show', [
+        $fields = [
             'contact'     => $contact,
             'phones'      => $contact->phones,
             'emails'      => $contact->emails,
             'userCountry' => $contact->country->country_name
-        ]);
+        ];
 
+        if ($request->ajax()) {
+            return view('partials.view-details', $fields);
+        }
+
+        //@TODO Implement works without AJAX
+        //
+        return view('partials.view-details', $fields);
     }
 
     public function mycontact()

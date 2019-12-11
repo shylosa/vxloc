@@ -26,6 +26,6 @@ class MainController extends Controller
             Contact::firstOrCreate(['user_id' => $user->id], ['country_id' => 1]);
         }
 
-        return view('pages.index');
+        return view('main.index');
     }
 }

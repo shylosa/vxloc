@@ -28,8 +28,8 @@ Route::get('/login', 'AuthController@loginForm')->name('login');
 Route::post('/login', 'AuthController@login');
 
 Route::get('/phonebook', 'PhonebookController@index')->name('phonebook');
-Route::get('/phonebook/{id}', 'PhonebookController@show')->name('phonebook.show');
-Route::get('/mycontact', 'PhonebookController@mycontact')->name('phonebook.mycontact');
+Route::get('/phonebook/{id}', 'PhonebookController@show')->name('show');
+Route::get('/mycontact', 'PhonebookController@mycontact');//->name('mycontact');
 
 Route::get('/logout', 'AuthController@logout');
 
