@@ -10,8 +10,12 @@ use Symfony\Component\Console\Input\Input;
 
 class AuthController extends Controller
 {
-    public function loginForm()
+    public function loginForm(Request $request)
     {
+        if($request->ajax()) {
+            return view('partials.login-form');
+        }
+
         return view('pages.login');
     }
 

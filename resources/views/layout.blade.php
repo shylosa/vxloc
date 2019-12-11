@@ -18,7 +18,7 @@
 </head>
 <body>
     <nav class="navbar navbar-light bg-light justify-content-center">
-        <a class="navbar-brand" href="/"><span class="mb-0 h1">{{config('app.name')}}</span></a>
+        <a class="navbar-brand" href="/"><span class="mb-0 h1">{{ config('app.name') }}</span></a>
     </nav>
     <div class="container">
         <div class="d-flex justify-content-center">
@@ -27,11 +27,11 @@
                 <a class="m-2 btn btn-dark" href="/phonebook">Public Phonebook</a>
                 <a class="m-2 btn btn-dark" href="/mycontact">My Contact</a>
             @else
-                <a class="m-2 btn btn-dark" href="/login">Login</a>
+                <a class="m-2 btn btn-dark" href="/login" id="js-link-login">Login</a>
                 <a class="m-2 btn btn-dark" href="/phonebook">Public Phonebook</a>
             @endif
         </div>
-        <div>
+        <div id="js-content">
             @yield('content')
         </div>
     </div>

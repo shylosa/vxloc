@@ -19,6 +19,12 @@
 
 Route::get('/', 'MainController@index');
 Route::get('/login', 'AuthController@loginForm')->name('login');
+/*Route::get('/login', function (){
+    if (Request::ajax()) {
+        return 'Request from AJAX method';
+    }
+    return 'AuthController@loginForm';})->name('login');*/
+
 Route::post('/login', 'AuthController@login');
 
 Route::get('/phonebook', 'PhonebookController@index')->name('phonebook');
