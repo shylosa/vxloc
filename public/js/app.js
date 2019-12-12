@@ -49505,6 +49505,33 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/common-phonebook.js":
+/*!******************************************!*\
+  !*** ./resources/js/common-phonebook.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(function () {
+  $('#js-link-phonebook').on('click', function (event) {
+    $.ajax({
+      type: 'GET',
+      url: $(this).attr('href')
+    }).done(function (response) {
+      $('#js-content').html(response);
+      $(function () {
+        $('.js-link').click(function (event) {
+          $(this).text($(this).text() === 'view details' ? 'hide details' : 'view details');
+        });
+      });
+    }); //Запрет перехода по нажатой ссылке
+
+    return false;
+  });
+});
+
+/***/ }),
+
 /***/ "./resources/js/components/ExampleComponent.vue":
 /*!******************************************************!*\
   !*** ./resources/js/components/ExampleComponent.vue ***!
@@ -49593,31 +49620,6 @@ $(function () {
     return false;
   });
 });
-/*let phonebook = $('#js-phonebook');
-let linkLogin = $('#js-link-login');
-phonebook.find('.invalid-feedback').remove();
-phonebook.removeClass('was-validated');
- event.preventDefault();
- $.ajax({
-  type: 'POST',
-  url: this.attr('href'),
-  data: chatForm.serialize(),
-}).done(function(data) {
-  postTable.html(data);
-  chatForm[0].reset();
-  chatForm.find('.invalid-feedback').remove();
-}).fail(function(jqXHR, textStatus, errorThrown) {
-  let $field, fieldName, $feedback;
-   chatForm.addClass('was-validated');
-   for (fieldName in jqXHR.responseJSON) {
-    $field = $('[name*="[' + fieldName + ']"]');
-    $feedback = $('<div class="invalid-feedback"></div>');
-    $feedback.html(jqXHR.responseJSON[fieldName]);
-    $field.parent().append($feedback);
-  }
-});
-});
-});*/
 
 /***/ }),
 
@@ -49633,14 +49635,15 @@ phonebook.removeClass('was-validated');
 /***/ }),
 
 /***/ 0:
-/*!*************************************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/js/login.js ./resources/sass/app.scss ***!
-  \*************************************************************************************/
+/*!************************************************************************************************************************!*\
+  !*** multi ./resources/js/app.js ./resources/js/login.js ./resources/js/common-phonebook.js ./resources/sass/app.scss ***!
+  \************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! /home/serhii/sproject/vxloc/resources/js/app.js */"./resources/js/app.js");
 __webpack_require__(/*! /home/serhii/sproject/vxloc/resources/js/login.js */"./resources/js/login.js");
+__webpack_require__(/*! /home/serhii/sproject/vxloc/resources/js/common-phonebook.js */"./resources/js/common-phonebook.js");
 module.exports = __webpack_require__(/*! /home/serhii/sproject/vxloc/resources/sass/app.scss */"./resources/sass/app.scss");
 
 

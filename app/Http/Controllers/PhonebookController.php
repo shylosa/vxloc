@@ -31,25 +31,6 @@ class PhonebookController extends Controller
             view('phonebook.index', $fields);
     }
 
-    public function show($id, Request $request)
-    {
-        $contact = Contact::find($id);
-        $fields = [
-            'contact'     => $contact,
-            'phones'      => $contact->phones,
-            'emails'      => $contact->emails,
-            'userCountry' => $contact->country->country_name
-        ];
-
-        if ($request->ajax()) {
-            return view('partials.view-details', $fields);
-        }
-
-        //@TODO Implement works without AJAX
-        //
-        return view('partials.view-details', $fields);
-    }
-
     public function mycontact()
     {
         $user = Auth::user();
@@ -69,7 +50,6 @@ class PhonebookController extends Controller
             'userCountry' => $user->contact->country->country_name,
             'countries'   => Country::all()->pluck('country_name', 'id')
         ]);
-
     }
 
     public function store(Request $request)
