@@ -31,7 +31,7 @@ class PhonebookController extends Controller
             view('phonebook.index', $fields);
     }
 
-    public function mycontact()
+    public function mycontact(Request $request)
     {
         $user = Auth::user();
         if ($user) {
@@ -41,15 +41,18 @@ class PhonebookController extends Controller
         }
         $contact = $user->contact->toArray();
 
-        //@TODO Make correct preservation of old field values in case of validation errors
+        //@TODO Implement correct preservation of old field values in case of validation errors
 
-        return view('phonebook.mycontact', [
+        $fields = [
             'contact'     => $contact,
             'phones'      => $user->contact->phones,
             'emails'      => $user->contact->emails,
             'userCountry' => $user->contact->country->country_name,
             'countries'   => Country::all()->pluck('country_name', 'id')
-        ]);
+        ];
+        return ($request->ajax()) ?
+            view('partials.mycontact-form', $fields) :
+            view('phonebook.mycontact', $fields);
     }
 
     public function store(Request $request)
@@ -67,18 +70,40 @@ class PhonebookController extends Controller
             'email_status' => 'required|array|min:1'
         ]);
 
+        $user = Auth::user();
+        $contact = $user->contact->toArray();
+        $fields = [
+            'contact'     => $contact,
+            'phones'      => $user->contact->phones,
+            'emails'      => $user->contact->emails,
+            'userCountry' => $user->contact->country->country_name,
+            'countries'   => Country::all()->pluck('country_name', 'id')
+        ];
+
+        //Validation OK
         if (!$validator->fails()) {
 
             $user = Auth::user();
-            $contactId = $user->contact->id;
+            $id = $user->contact->id;
             $user->contact->editContact($request->all());
-            $user->contact->setPhones($request->input('phone'), $request->input('phone_status'), $contactId);
-            $user->contact->setEmails($request->input('email'), $request->input('email_status'), $contactId);
+            $user->contact->setPhones($request->input('phone'), $request->input('phone_status'), $id);
+            $user->contact->setEmails($request->input('email'), $request->input('email_status'), $id);
 
-            return redirect()->back()->with('status', 'Contact updated!');
+            //return redirect('/mycontact')->with('status', 'Contact updated!');
+            if ($request->ajax()) {
+
+                return view('partials.mycontact-form', $fields);
+            }
+
+            return redirect('/mycontact')->with('status', 'Contact updated!');
         }
 
-        return redirect()->back()->withErrors($validator);
+        //Validation failed
+        return ($request->ajax()) ?
+            view('partials.mycontact-form', $fields)->withErrors($validator) :
+            redirect('/mycontact')->withErrors($validator);
+
+        //return redirect('/mycontact')->withErrors($validator);
         //return redirect()->back()->with('status', 'Some fields contain errors!')->withErrors($validator);
     }
 }

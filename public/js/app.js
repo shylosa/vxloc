@@ -49623,6 +49623,38 @@ $(function () {
 
 /***/ }),
 
+/***/ "./resources/js/mycontact-form.js":
+/*!****************************************!*\
+  !*** ./resources/js/mycontact-form.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(function () {
+  $('#js-link-mycontact').on('click', function (event) {
+    $.ajax({
+      type: 'GET',
+      url: $(this).attr('href')
+    }).done(function (response) {
+      $('#js-content').html(response);
+    });
+    return false;
+  });
+  $('#mycontact-form').on('submit', function (event) {
+    event.preventDefault();
+    var form = $(this);
+    $.ajax({
+      type: form.attr('method'),
+      url: form.attr('action'),
+      data: form.serialize()
+    }).done(function (response) {
+      $('#js-content').html(response);
+    });
+  });
+});
+
+/***/ }),
+
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -49635,15 +49667,16 @@ $(function () {
 /***/ }),
 
 /***/ 0:
-/*!************************************************************************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/js/login.js ./resources/js/common-phonebook.js ./resources/sass/app.scss ***!
-  \************************************************************************************************************************/
+/*!*********************************************************************************************************************************************************!*\
+  !*** multi ./resources/js/app.js ./resources/js/login.js ./resources/js/common-phonebook.js ./resources/js/mycontact-form.js ./resources/sass/app.scss ***!
+  \*********************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! /home/serhii/sproject/vxloc/resources/js/app.js */"./resources/js/app.js");
 __webpack_require__(/*! /home/serhii/sproject/vxloc/resources/js/login.js */"./resources/js/login.js");
 __webpack_require__(/*! /home/serhii/sproject/vxloc/resources/js/common-phonebook.js */"./resources/js/common-phonebook.js");
+__webpack_require__(/*! /home/serhii/sproject/vxloc/resources/js/mycontact-form.js */"./resources/js/mycontact-form.js");
 module.exports = __webpack_require__(/*! /home/serhii/sproject/vxloc/resources/sass/app.scss */"./resources/sass/app.scss");
 
 

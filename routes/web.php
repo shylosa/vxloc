@@ -28,10 +28,12 @@ Route::get('/login', 'AuthController@loginForm')->name('login');
 Route::post('/login', 'AuthController@login');
 
 Route::get('/phonebook', 'PhonebookController@index')->name('phonebook');
-Route::get('/phonebook/{id}', 'PhonebookController@show')->name('show');
-Route::get('/mycontact', 'PhonebookController@mycontact');//->name('mycontact');
+Route::get('/phonebook/{id}', 'PhonebookController@index')->name('show');
+
+Route::get('/mycontact', 'PhonebookController@mycontact');
+Route::post('/mycontact', 'PhonebookController@mycontact');
 
 Route::get('/logout', 'AuthController@logout');
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::post('/', 'PhonebookController@store')->name('phonebook.store');
+Route::post('/mycontact', 'PhonebookController@store')->name('store');

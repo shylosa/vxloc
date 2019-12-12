@@ -13,5 +13,6 @@ const mix = require('laravel-mix');
 
 mix.js(['resources/js/app.js',
         'resources/js/login.js',
-        'resources/js/common-phonebook.js'], 'public/js')
+        'resources/js/common-phonebook.js',
+        'resources/js/mycontact-form.js'], 'public/js')
    .sass('resources/sass/app.scss', 'public/css');

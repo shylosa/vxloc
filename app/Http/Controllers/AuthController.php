@@ -51,9 +51,13 @@ class AuthController extends Controller
         return redirect()->back()->with('status', 'Неправильный логин или пароль');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
-        return redirect('/login');
+
+        return ($request->ajax()) ?
+            redirect('/login') :
+            redirect('/');
+
     }
 }

@@ -23,9 +23,9 @@
     <div class="container">
         <div class="d-flex justify-content-center">
             @if(Auth::check())
-                <a class="m-2 btn btn-dark" href="/logout" id="js-link-login">Logout</a>
+                <a class="m-2 btn btn-dark" href="/logout" id="js-link-logout">Logout</a>
                 <a class="m-2 btn btn-dark" href="/phonebook" id="js-link-phonebook">Public Phonebook</a>
-                <a class="m-2 btn btn-dark" href="/mycontact">My Contact</a>
+                <a class="m-2 btn btn-dark" href="/mycontact" id="js-link-mycontact">My Contact</a>
             @else
                 <a class="m-2 btn btn-dark" href="/login" id="js-link-login">Login</a>
                 <a class="m-2 btn btn-dark" href="/phonebook" id="js-link-phonebook">Public Phonebook</a>
