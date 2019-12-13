@@ -86,15 +86,6 @@ class PhonebookController extends Controller
 
         $user = Auth::user();
         $id = $user->contact->id;
-        /*$contact = $user->contact->toArray();
-
-        $fields = [
-            'contact'     => $contact,
-            'phones'      => $user->contact->phones,
-            'emails'      => $user->contact->emails,
-            'userCountry' => $user->contact->country->country_name,
-            'countries'   => Country::all()->pluck('country_name', 'id')
-        ];*/
 
         //Validation OK
         if (!$validator->fails()) {
@@ -104,18 +95,39 @@ class PhonebookController extends Controller
             $user->contact->setEmails($request->input('email'), $request->input('email_status'), $id);
 
             return redirect(route('mycontact'))->with('status', 'Contact updated!');
-           /* return ($request->ajax()) ?
-                view('partials.mycontact-form', $fields)->with('status', 'Contact updated!') :
-                redirect('/mycontact')->with('status', 'Contact updated!');*/
         }
 
         //Validation failed
-       /* return ($request->ajax()) ?
-            //$this->mycontact($request) :
-            view('partials.mycontact-form', $fields)->withErrors($validator) :
-            redirect('/mycontact')->withErrors($validator);*/
-
         return redirect(route('mycontact'))->withErrors($validator);
-        //return redirect()->back()->with('status', 'Some fields contain errors!')->withErrors($validator);
+    }
+
+    //@TODO Make universal method for add phone and add email
+
+    /**
+     * Add phone for the user
+     *
+     */
+    public function addPhone()
+    {
+        $user = Auth::user();
+        if (!$user) { return; }
+        $contact = $user->contact;
+        $contact->addField(Phone::class)->id;
+
+        return redirect(route('mycontact'));
+    }
+
+    /**
+     * Add phone for the user
+     *
+     */
+    public function addEmail()
+    {
+        $user = Auth::user();
+        if (!$user) { return; }
+        $contact = $user->contact;
+        $contact->addField(Email::class)->id;
+
+        return redirect(route('mycontact'));
     }
 }

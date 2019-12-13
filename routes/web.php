@@ -32,4 +32,6 @@ Route::post('/store', 'PhonebookController@store')->name('store');
 Route::get('/logout', 'AuthController@logout');
 
 Route::get('/home', 'HomeController@index')->name('home');
-//Route::post('/store', 'PhonebookController@store')->name('store');
+
+Route::get('/add-phone', 'PhonebookController@addPhone');
+Route::get('/add-email', 'PhonebookController@addEmail');

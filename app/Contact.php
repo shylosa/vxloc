@@ -176,4 +176,17 @@ class Contact extends AppModel
             ?   implode(', ', $this->emails->pluck('email')->all())
             : 'Нет адресов';
     }
+
+    /**
+     * Add new field in database
+     *
+     * @return mixed
+     */
+    public function addField($fieldType)
+    {
+        $field = $fieldType::create(['contact_id' => $this->id]);
+        $field->save();
+
+        return $field;
+    }
 }
