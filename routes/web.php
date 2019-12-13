@@ -19,21 +19,17 @@
 
 Route::get('/', 'MainController@index');
 Route::get('/login', 'AuthController@loginForm')->name('login');
-/*Route::get('/login', function (){
-    if (Request::ajax()) {
-        return 'Request from AJAX method';
-    }
-    return 'AuthController@loginForm';})->name('login');*/
 
 Route::post('/login', 'AuthController@login');
 
 Route::get('/phonebook', 'PhonebookController@index')->name('phonebook');
 Route::get('/phonebook/{id}', 'PhonebookController@index')->name('show');
 
-Route::get('/mycontact', 'PhonebookController@mycontact');
+Route::get('/mycontact', 'PhonebookController@mycontact')->name('mycontact');
 Route::post('/mycontact', 'PhonebookController@mycontact');
+Route::post('/store', 'PhonebookController@store')->name('store');
 
 Route::get('/logout', 'AuthController@logout');
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::post('/mycontact', 'PhonebookController@store')->name('store');
+//Route::post('/store', 'PhonebookController@store')->name('store');

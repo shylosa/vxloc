@@ -49632,23 +49632,24 @@ $(function () {
 
 $(function () {
   $('#js-link-mycontact').on('click', function (event) {
+    event.preventDefault();
     $.ajax({
       type: 'GET',
       url: $(this).attr('href')
     }).done(function (response) {
       $('#js-content').html(response);
     });
-    return false;
   });
-  $('#mycontact-form').on('submit', function (event) {
+  $('#js-content').on('submit', 'form', function (event) {
     event.preventDefault();
-    var form = $(this);
+    var uform = $('#mycontact-form');
     $.ajax({
-      type: form.attr('method'),
-      url: form.attr('action'),
-      data: form.serialize()
+      type: uform.attr('method'),
+      url: uform.attr('action'),
+      data: uform.serialize()
     }).done(function (response) {
       $('#js-content').html(response);
+      $('.alert, .text-danger, .invalid-feedback').delay(1000).fadeOut(1000);
     });
   });
 });
