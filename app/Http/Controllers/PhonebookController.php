@@ -8,6 +8,7 @@ use App\Email;
 use App\Phone;
 use App\User;
 use Auth;
+use Eloquent;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,6 +16,11 @@ use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * Class PhonebookController
+ * @package App\Http\Controllers
+ * @mixin Eloquent
+ */
 class PhonebookController extends Controller
 {
     /**
@@ -25,7 +31,10 @@ class PhonebookController extends Controller
      */
     public function index(Request $request)
     {
-        $contacts = Contact::whereNotNull('firstname')->whereNotNull('lastname')->get();
+        $contacts = Contact::whereNotNull('firstname')
+            ->whereNotNull('lastname')
+            ->where('contact_status', '=', '1')
+            ->get();
         $fields = ['contacts' => $contacts];
 
         return ($request->ajax()) ?
@@ -34,7 +43,7 @@ class PhonebookController extends Controller
     }
 
     /**
-     * Show mycontact form
+     * Display mycontact form
      *
      * @param Request $request
      * @return Factory|View
@@ -85,7 +94,10 @@ class PhonebookController extends Controller
         ]);
 
         $user = Auth::user();
-        $id = $user->contact->id;
+        try {
+            $id = $user->contact->id;
+        } catch (\Exception $e) {
+        }
 
         //Validation OK
         if (!$validator->fails()) {

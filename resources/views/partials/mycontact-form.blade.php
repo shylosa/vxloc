@@ -113,7 +113,7 @@
                     </div>
                   </div>
                 @endforeach
-                <a href="/add-phone" class="col-md-4 float-right" id="js-add-phone">Add</a>
+                <a href="/add-phone" class="col-md-4 float-right js-add-field">Add</a>
               </div>
 
               <div id="emails" class="col-sm text-md-center">
@@ -134,7 +134,7 @@
                     </div>
                   </div>
                 @endforeach
-                <a href="/add-email" class="col-md-4 float-right" id="js-add-email">Add</a>
+                <a href="/add-email" class="col-md-4 float-right js-add-field">Add</a>
               </div>
             </div>
 

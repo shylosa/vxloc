@@ -2,10 +2,52 @@
 
 namespace App;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 
+/**
+ * App\Contact
+ *
+ * @property int $id
+ * @property int|null $user_id
+ * @property string|null $firstname
+ * @property string|null $lastname
+ * @property string|null $address
+ * @property string|null $zipcode
+ * @property int $country_id
+ * @property int $contact_status
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Country $country
+ * @property-read Collection|Email[] $emails
+ * @property-read int|null $emails_count
+ * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read Collection|Phone[] $phones
+ * @property-read int|null $phones_count
+ * @property-read User $user
+ * @method static Builder|Contact newModelQuery()
+ * @method static Builder|Contact newQuery()
+ * @method static Builder|Contact query()
+ * @method static Builder|Contact whereAddress($value)
+ * @method static Builder|Contact whereContactStatus($value)
+ * @method static Builder|Contact whereCountryId($value)
+ * @method static Builder|Contact whereCreatedAt($value)
+ * @method static Builder|Contact whereFirstname($value)
+ * @method static Builder|Contact whereId($value)
+ * @method static Builder|Contact whereLastname($value)
+ * @method static Builder|Contact whereUpdatedAt($value)
+ * @method static Builder|Contact whereUserId($value)
+ * @method static Builder|Contact whereZipcode($value)
+ * @mixin Eloquent
+ */
 class Contact extends AppModel
 {
     use Notifiable;
@@ -26,7 +68,7 @@ class Contact extends AppModel
     ];
 
     /**
-     * User-country Database Dependencies
+     * Contact-user Database Dependencies
      *
      * @return BelongsTo
      */
@@ -36,7 +78,7 @@ class Contact extends AppModel
     }
 
     /**
-     * User-country Database Dependencies
+     * Contact-country Database Dependencies
      *
      * @return BelongsTo
      */
@@ -46,7 +88,7 @@ class Contact extends AppModel
     }
 
     /**
-     * User-phones Database Dependencies
+     * Contact-phones Database Dependencies
      *
      * @return hasMany
      */
@@ -56,7 +98,7 @@ class Contact extends AppModel
     }
 
     /**
-     * User-emails Database Dependencies
+     * Contact-emails Database Dependencies
      *
      * @return hasMany
      */
@@ -77,6 +119,7 @@ class Contact extends AppModel
         $contact->save();
 
     }
+
     /**
      * Edit existing contact
      *
@@ -87,7 +130,6 @@ class Contact extends AppModel
         $this->fill($fields);
         $this->save();
     }
-
 
     /**
      * Set country for current contact
@@ -106,16 +148,16 @@ class Contact extends AppModel
      *
      * @param array $phones
      * @param array $states
-     * @param int $contactId
+     * @param int $id
      */
-    public function setPhones(array $phones, array $states, int $contactId): void
+    public function setPhones(array $phones, array $states, int $id): void
     {
         if($phones === null || $states === null) { return; }
         foreach ($phones as $key => $phone) {
             if ($phone) {
                 Phone::updateOrCreate(
                     ['id' => $key],
-                    ['phone' => $phone, 'phone_status' => $states[$key], 'contact_id' => $contactId]);
+                    ['phone' => $phone, 'phone_status' => $states[$key], 'contact_id' => $id]);
             }
 
         }
@@ -126,16 +168,16 @@ class Contact extends AppModel
      *
      * @param array $emails
      * @param array $states
-     * @param int $contactId
+     * @param int $id
      */
-    public function setEmails(array $emails, array $states, int $contactId): void
+    public function setEmails(array $emails, array $states, int $id): void
     {
         if($emails === null || $states === null) { return; }
         foreach ($emails as $key => $email) {
             if ($email) {
                 Email::updateOrCreate(
                     ['id' => $key],
-                    ['email' => $email, 'email_status' => $states[$key], 'contact_id' => $contactId]);
+                    ['email' => $email, 'email_status' => $states[$key], 'contact_id' => $id]);
             }
         }
 
@@ -180,11 +222,12 @@ class Contact extends AppModel
     /**
      * Add new field in database
      *
+     * @param $class
      * @return mixed
      */
-    public function addField($fieldType)
+    public function addField($class)
     {
-        $field = $fieldType::create(['contact_id' => $this->id]);
+        $field = $class::create(['contact_id' => $this->id]);
         $field->save();
 
         return $field;

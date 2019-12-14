@@ -13,8 +13,10 @@ $(function(){
   var jsContent =$('#js-content');
 
   jsContent.on('submit', 'form', function (event) {
+
+    if($(this).attr('id') === 'mycontact-form') {
       event.preventDefault();
-      var uform = $('#mycontact-form');
+      var uform = $(this);
 
       $.ajax({
         type: uform.attr('method'),
@@ -24,17 +26,19 @@ $(function(){
         $('#js-content').html(response);
         $('.alert, .text-danger, .invalid-feedback').delay(1000).fadeOut(1000);
       });
+    }
   });
 
   jsContent.on('click', 'a', function (event) {
-    event.preventDefault();
-
-    $.ajax({
-      type: 'GET',
-      url: $(this).attr('href'),
-    }).done(function (response) {
-      $('#js-content').html(response);
-    });
+    if($(this).hasClass('js-add-field')) {
+      event.preventDefault();
+      $.ajax({
+        type: 'GET',
+        url: $(this).attr('href')
+      }).done(function (response) {
+        $('#js-content').html(response);
+      });
+    }
   });
 });
 

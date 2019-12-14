@@ -2,8 +2,18 @@
 
 namespace App;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\AppModel
+ *
+ * @method static Builder|AppModel newModelQuery()
+ * @method static Builder|AppModel newQuery()
+ * @method static Builder|AppModel query()
+ * @mixin Eloquent
+ */
 class AppModel extends Model
 {
     public const IS_PUBLIC = 1;
@@ -45,7 +55,7 @@ class AppModel extends Model
     }
 
     /**
-     * Set checkboxe status
+     * Set checkbox status
      *
      * @param $state
      * @return string
